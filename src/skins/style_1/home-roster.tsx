@@ -16,7 +16,7 @@ export const HomeRoster = ({ show }: { show: boolean }) => {
         <Row>
           <GridWrapper>
             {players.map((player, i) => (
-              <PlayerBlock key={i}>
+              <PlayerBlock key={i} delay={i * 0.1}>
                 <LeftImage src="/pers.png" />
                 <NameBlock>
                   {player.player_fio.split(" ").map((word, idx) => (
@@ -74,6 +74,17 @@ export const HomeRoster = ({ show }: { show: boolean }) => {
     </Container>
   );
 };
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const slideDown = keyframes`
   from {
@@ -165,13 +176,16 @@ const GridWrapper = styled.div`
   z-index: 133;
 `;
 
-const PlayerBlock = styled.div`
+const PlayerBlock = styled.div<{ delay: number }>`
   position: relative;
   width: 288px;
   height: 61px;
   background: white;
   display: flex;
   justify-content: center;
+  opacity: 0;
+  animation: ${fadeInUp} 0.4s ease forwards;
+  animation-delay: ${({ delay }) => delay}s;
 `;
 
 const LeftImage = styled.img`
@@ -251,7 +265,7 @@ const TrRole = styled.div`
   background: #1c0a4f;
   text-align: center;
 
-clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%);
 `;
 
 const CoachPlayerBlockWrapper = styled.div`

@@ -289,7 +289,6 @@ const ScoreText = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: -30px;
   font-size: 74px;
   font-weight: 700;
   line-height: 1;
@@ -297,12 +296,14 @@ const ScoreText = styled.div`
 `;
 
 const ScoreNumber = styled.span<{ side?: "left" | "right" }>`
-  padding-left: ${(props) => (props.side === "right" ? "30px" : "0px")};
+  display: inline-block;
+  min-width: 80px; // гарантированная ширина
+  text-align: center;
 `;
 
 const Moln = styled.div`
-    margin-top:9px;
-  margin-left: 56px;
+  margin-top: 9px;
+  margin-right: 4px;
   width: 80px;
   height: 162px;
   background: url("/molia.png") no-repeat center center;

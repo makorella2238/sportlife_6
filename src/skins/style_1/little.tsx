@@ -26,22 +26,25 @@ export const Little = ({ show }: { show: boolean }) => {
 
         <Row>
           <TeamBox side="left">
-              <TeamLogo side="left" src={match?.team_1?.img} />
+            <TeamLogo side="left" src={match?.team_1?.img} />
             <InnerBox side="left">
-              <TeamName side="left">{"МЕХ"}</TeamName>
-              <Prym side="left"></Prym>
+              <CenteredContent>
+                <TeamName side="left">{"МЕХ"}</TeamName>
+              </CenteredContent>
+              <Prym side="left" />
             </InnerBox>
           </TeamBox>
           <ScoreBox>
             <MainScore>
               <ScoreValue>{scoreboard?.team_1_score}</ScoreValue>
-              <ScoreValue> </ScoreValue>
+              <div style={{ width: "8px" }} />{" "}
+              {/* Просто отступ вместо пробела */}
               <ScoreValue>{scoreboard?.team_2_score}</ScoreValue>
             </MainScore>
           </ScoreBox>
 
           <TeamBox side="right">
-              <TeamLogo side="right" src={match?.team_2?.img} />
+            <TeamLogo side="right" src={match?.team_2?.img} />
             <InnerBox side="right">
               <TeamName side="right">{"ФЕЛ"}</TeamName>
               <Prym side="right"></Prym>
@@ -132,7 +135,6 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   z-index: 1;
 `;
 
-
 const TeamName = styled.div<{ side: "left" | "right" }>`
   font-family: "Furore", sans-serif;
   font-weight: 400;
@@ -145,35 +147,36 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
   overflow: hidden;
   text-overflow: ellipsis;
 
-  text-align: center; // Центрируем текст по горизонтали
-  width: 100%; // Чтобы текст занимал всю доступную ширину внутри TeamBox
+  text-align: center;
   z-index: 1;
 `;
 
 const MainScore = styled.div`
   position: absolute;
-  top: -28.9px; // Подкорректируй под нужное смещение сверху
+  top: -28.9px;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; // три колонки
   align-items: center;
-  justify-content: center;
-  gap: 0;
-  background: url('/litil.png') no-repeat center center / cover;
+  justify-items: center;
+  background: url("/litil.png") no-repeat center center / cover;
   height: 54.5px;
   width: 140px;
   z-index: 200;
-  margin: 0; /* Убираем отступы, т.к. позиционирование абсолютное */
 `;
 
 const InnerBox = styled.div<{ side: "left" | "right" }>`
   display: flex;
   flex-direction: ${({ side }) => (side === "right" ? "row-reverse" : "row")};
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   box-sizing: border-box;
   position: relative;
+  padding-right: ${({ side }) => (side === "right" ? "35px" : "0")};
+
+  padding-left: ${({ side }) => (side === "left" ? "28px" : "0")};
 `;
 
 const ScoreBox = styled.div`
@@ -215,13 +218,20 @@ const FoulNumber = styled.div`
   font-weight: 400;
 `;
 
-
 const ScoreValue = styled.div`
-  font-size: 37px; // было 39px
-  width: 25px; // было 50px
+  font-size: 37px;
+  min-width: 32px; // достаточно для двух знаков
   text-align: center;
   font-weight: 700;
   color: white;
+`;
+
+const CenteredContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
 `;
 
 const Row = styled.div`
@@ -234,7 +244,7 @@ const Row = styled.div`
   position: relative;
   z-index: 10;
   overflow: visible;
-  border-radius: 12px
+  border-radius: 12px;
 `;
 
 const FoulText = styled.div`

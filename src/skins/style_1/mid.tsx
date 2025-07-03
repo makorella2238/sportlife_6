@@ -38,7 +38,7 @@ export const Mid = ({ show }: { show: boolean }) => {
 
         <TeamsContainer>
           <TourText side="left">{match?.stadium?.name}</TourText>
-          <TeamImg src='molia.png' />
+          <TeamImg src="molia.png" />
           <TourText side="right">1 тур</TourText>
         </TeamsContainer>
 
@@ -49,9 +49,9 @@ export const Mid = ({ show }: { show: boolean }) => {
           </TeameBox>
 
           <CenterBox>
-            <TeamNameForData>{/* дата отсюда */}31.07.2025</TeamNameForData>
+            <TeamNameForData side="top">{/* дата отсюда */}31.07.2025</TeamNameForData>
             <CenterImage src="/VS.png" alt="center image" />
-            <TeamNameForData>{/* время отсюда */}03:00</TeamNameForData>
+            <TeamNameForData side="bottom">{/* время отсюда */}03:00</TeamNameForData>
           </CenterBox>
 
           <TeameBox color={match?.team_2?.color}>
@@ -182,8 +182,6 @@ const TeamsContainer = styled.div`
   justify-content: center;
   z-index: 5;
   position: relative;
-
-  // Убери gap, он не работает с отрицательными значениями
 `;
 
 const TourText = styled.div<{ side: "left" | "right" }>`
@@ -213,8 +211,9 @@ const TeamsRow = styled.div<{ $isTwoLines: boolean }>`
   font-weight: 400;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 50px; // уменьшу gap, чтобы был место для центра
+  justify-content: space-between; /* для равного распределения */
+  width: 1100px; /* важно для правильной центровки */
+  padding: 0 60px;
   z-index: 5;
 `;
 
@@ -226,17 +225,19 @@ const TeamImg = styled.img`
   left: 71.2%;
   animation: ${lightningStrike} 2.5s ease-in-out infinite;
   transform: translate(-50%, -50%);
-   transform: translate(-50%, -50%) rotate(1deg); // поворот вправо на 1 градус
+  transform: translate(-50%, -50%) rotate(1deg); // поворот вправо на 1 градус
 
   object-fit: contain;
 `;
-
 
 const CenterBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px; /* расстояние между датой, изображением и временем */
+  gap: 16px;
+  min-width: 250px;
+  max-width: 300px;
+  flex-shrink: 0;
 `;
 
 const CenterImage = styled.img`
@@ -249,6 +250,8 @@ const TeameBox = styled.div<{ color?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1; /* чтобы занимали одинаковое пространство */
+  max-width: 350px; /* можно ограничить ширину */
 `;
 
 const TeamName = styled.div`
@@ -260,9 +263,13 @@ const TeamName = styled.div`
   text-align: center;
   max-width: 100%;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+  white-space: nowrap;        // ⬅️ Не даёт переносить строки
+  overflow: hidden;           // ⬅️ Обрезает текст, если он не вмещается
 `;
 
-const TeamNameForData = styled.div`
+
+const TeamNameForData = styled.div<{ side: "top" | "bottom" }>`
   width: 224px;
   font-size: 37px;
   color: #fff;
@@ -271,6 +278,9 @@ const TeamNameForData = styled.div`
   text-align: center;
   max-width: 100%;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+  margin-bottom: ${({ side }) => (side === "top" ? "30px" : "0")};
+  margin-top: ${({ side }) => (side === "bottom" ? "30px" : "0")};
 `;
 
 const TeamLogo = styled.img`

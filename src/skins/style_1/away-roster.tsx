@@ -15,8 +15,8 @@ export const AwayRoster = ({ show }: { show: boolean }) => {
         </Header>
         <Row>
           <GridWrapper>
-            {players.map((player, i) => (
-              <PlayerBlock key={i}>
+             {players.map((player, i) => (
+              <PlayerBlock key={i} delay={i * 0.1}>
                 <LeftImage src="/pers.png" />
                 <NameBlock>
                   {player.player_fio.split(" ").map((word, idx) => (
@@ -86,10 +86,22 @@ const slideDown = keyframes`
   }
 `;
 
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+
 const Container = styled.div`
   color: #fff; /* вместо text-color */
   width: 1720px;
-  height: 820px;
+  height: 920px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -152,7 +164,7 @@ const Wrapper = styled.div`
   background: linear-gradient(-45deg, #0e173f, #001b94, #0e173f);
   background-size: 400% 400%;
   width: 1642px;
-  height: 933px;
+  height: 673px;
   overflow: hidden;
   animation: ${slideDown} 0.5s ease forwards;
 `;
@@ -164,15 +176,16 @@ const GridWrapper = styled.div`
   gap: 45px 40px;
   z-index: 133;
 `;
-
-const PlayerBlock = styled.div`
+const PlayerBlock = styled.div<{ delay: number }>`
   position: relative;
   width: 288px;
   height: 61px;
   background: white;
   display: flex;
-  align-items: center;
   justify-content: center;
+  opacity: 0;
+  animation: ${fadeInUp} 0.4s ease forwards;
+  animation-delay: ${({ delay }) => delay}s;
 `;
 
 const LeftImage = styled.img`
@@ -207,7 +220,7 @@ const NumberBlock = styled.div`
   background: #794bff;
   color: #fff;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -233,6 +246,7 @@ const Trener = styled.div`
   justify-content: flex-start;
   z-index: 9999;
   width: auto; /* по содержимому */
+
 `;
 
 const TrRole = styled.div`
@@ -290,13 +304,14 @@ const CoachLeftImage = styled.img`
 `;
 
 const TernBlock = styled.div`
+  margin-bottom: 20px;
   position: relative;
 `;
 
 const CoachNameBlock = styled.div`
   text-aign: left;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 400;
   color: #000;
   line-height: 1.1;
   text-align: center;
