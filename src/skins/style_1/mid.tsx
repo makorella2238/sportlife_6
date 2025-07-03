@@ -37,7 +37,9 @@ export const Mid = ({ show }: { show: boolean }) => {
         </TitleContainer>
 
         <TeamsContainer>
-          <TourText>{match?.stadium?.name}</TourText>
+          <TourText side="left">{match?.stadium?.name}</TourText>
+          <TeamImg src='molia.png' />
+          <TourText side="right">1 тур</TourText>
         </TeamsContainer>
 
         <TeamsRow $isTwoLines={isTwoLines}>
@@ -46,31 +48,17 @@ export const Mid = ({ show }: { show: boolean }) => {
             <TeamName>{match?.team_1?.name}</TeamName>
           </TeameBox>
 
+          <CenterBox>
+            <TeamNameForData>{/* дата отсюда */}31.07.2025</TeamNameForData>
+            <CenterImage src="/VS.png" alt="center image" />
+            <TeamNameForData>{/* время отсюда */}03:00</TeamNameForData>
+          </CenterBox>
+
           <TeameBox color={match?.team_2?.color}>
             <TeamLogo src={match?.team_2?.img} />
             <TeamName>{match?.team_2?.name}</TeamName>
           </TeameBox>
         </TeamsRow>
-
-        <Row>
-          <TimeBox side="left">
-            <InnerBox side="left">
-              <TeamNameForData>31.07.2025</TeamNameForData>
-            </InnerBox>
-          </TimeBox>
-
-          <Divider />
-
-          <TimeBox side="right">
-            <InnerBox side="right">
-              <TeamNameForData>03:00</TeamNameForData>
-            </InnerBox>
-          </TimeBox>
-
-          <Trapezoid>
-            <TrapezoidText>1 тур</TrapezoidText>
-          </Trapezoid>
-        </Row>
       </Wrapper>
     </Container>
   );
@@ -84,6 +72,34 @@ const slideDown = keyframes`
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+`;
+
+const lightningStrike = keyframes`
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 0 transparent);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  10% {
+    filter: brightness(3) drop-shadow(0 0 10px #fff);
+    opacity: 1;
+    transform: translateX(2px);
+  }
+  20% {
+    filter: brightness(1.5) drop-shadow(0 0 5px #f0f8ff);
+    opacity: 0.8;
+    transform: translateX(-2px);
+  }
+  30% {
+    filter: brightness(2.5) drop-shadow(0 0 12px #aaf);
+    opacity: 1;
+    transform: translateX(1px);
+  }
+  50% {
+    filter: brightness(1) drop-shadow(0 0 0 transparent);
+    opacity: 0.7;
+    transform: translateX(0);
   }
 `;
 
@@ -139,67 +155,94 @@ const BackgroundImage = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  width: 1042px;
-  padding: 38px 35px;
-  border-radius: 0 0 24px 24px;
-  background: linear-gradient(to right, #d7001a, #71000e);
+  margin-top: 50px;
+  width: 1087px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 6;
   position: relative;
+  margin-bottom: 58px;
 `;
 
 const TitleLine = styled.div`
-  font-weight: 600;
+  font-weight: 400;
   font-size: 56px;
   line-height: 70px;
   letter-spacing: -2%;
   text-align: center;
   color: #fff;
   text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  z-index: 10; // ← добавь это
 `;
 
 const TeamsContainer = styled.div`
-  width: 388px;
-  height: 98px;
   display: flex;
-  padding-top: 45px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: -55px; /* Заходим под TitleContainer */
   z-index: 5;
-  background: url("midsubtitle.png") no-repeat center center / cover;
-  clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
   position: relative;
+
+  // Убери gap, он не работает с отрицательными значениями
 `;
 
-const TourText = styled.div`
-  height: 100%;
-  width: 100%;
+const TourText = styled.div<{ side: "left" | "right" }>`
+  height: 145px;
+  padding-right: ${({ side }) => (side === "left" ? "10px" : "0")};
+  width: ${({ side }) => (side === "left" ? "820px" : "288.5px")};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 37px;
+  font-size: 35px;
   font-weight: 700;
   color: #fff;
+  background: ${({ side }) =>
+    side === "left" ? "url('/midleft.png')" : "url('/midrigth.png')"};
   text-transform: uppercase;
   letter-spacing: 3px;
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+
+  // Добавим отрицательный отступ
+  margin-left: ${({ side }) => (side === "right" ? "-60px" : "0")};
+  margin-right: ${({ side }) => (side === "left" ? "-29px" : "0")};
 `;
 
 const TeamsRow = styled.div<{ $isTwoLines: boolean }>`
-  margin-top: ${({ $isTwoLines }) => ($isTwoLines ? "-65px" : "10px")};
+  margin-top: ${({ $isTwoLines }) => ($isTwoLines ? "40px" : "30px")};
   display: flex;
+  font-weight: 400;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 168px;
+  gap: 50px; // уменьшу gap, чтобы был место для центра
   z-index: 5;
-  margin-right: 40px;
+`;
+
+const TeamImg = styled.img`
+  width: 68px;
+  height: 182px;
+  position: absolute;
+  z-index: 10;
+  left: 71.2%;
+  animation: ${lightningStrike} 2.5s ease-in-out infinite;
+  transform: translate(-50%, -50%);
+   transform: translate(-50%, -50%) rotate(1deg); // поворот вправо на 1 градус
+
+  object-fit: contain;
+`;
+
+
+const CenterBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; /* расстояние между датой, изображением и временем */
+`;
+
+const CenterImage = styled.img`
+  width: 175px; // подбери нужный размер
+  height: 109px;
+  object-fit: contain;
 `;
 
 const TeameBox = styled.div<{ color?: string }>`
@@ -208,16 +251,8 @@ const TeameBox = styled.div<{ color?: string }>`
   align-items: center;
 `;
 
-const Divider = styled.div`
-  width: 5px;
-  height: 56px;
-  background: #fff;
-  z-index: 3;
-`;
-
 const TeamName = styled.div`
   width: 100%;
-  font-weight: 600;
   font-size: 40px;
   color: #fff;
   padding: 0 24px;
@@ -229,7 +264,6 @@ const TeamName = styled.div`
 
 const TeamNameForData = styled.div`
   width: 224px;
-  font-weight: 600;
   font-size: 37px;
   color: #fff;
   padding: 0 24px;

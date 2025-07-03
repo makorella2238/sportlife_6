@@ -4,63 +4,76 @@ import styled, { keyframes } from "styled-components";
 import { useMatch } from "@/hooks";
 export const AwayRoster = ({ show }: { show: boolean }) => {
   const match = useMatch();
-  const players = match?.results_1?.slice(0, 9) || [];
-  const teamName = match?.team_1?.name || "";
+  const players = match?.results_2?.slice(0, 10) || [];
+  const teamName = match?.team_2?.name || "";
 
   return (
     <Container style={{ display: show ? "flex" : "none" }}>
       <Wrapper>
-        <BackgroundImage />
-        <Mach1 src="/sostimg.png" />
-        <Mach2Blur src="/sostimgblur.png" />
         <Header>
-          <TitleContainer>
-            <TitleLine>{teamName}</TitleLine>
-            <TeamLogo src={match?.team_1?.img} alt="Team Logo" />
-          </TitleContainer>
-          <TeamsContainer>
-            <TourText>СОСТАВ</TourText>
-          </TeamsContainer>
+          <TourText>СОСТАВ {teamName}</TourText>
         </Header>
-        <Trener>
-          <TrItem>
-            <TrName>{match?.team_1?.coaches[0].fio}</TrName>
-            <TrTitle>ТРЕНЕР</TrTitle>
-          </TrItem>
-          <TrItem>
-            <TrName>{match?.team_1?.representativs[0].fio}</TrName>
-            <TrTitle>представитель</TrTitle>
-          </TrItem>
-        </Trener>
-
         <Row>
           <GridWrapper>
             {players.map((player, i) => (
               <PlayerBlock key={i}>
                 <LeftImage src="/pers.png" />
-                <RightInfo>
-                  <NameBlock>{player.player_fio}</NameBlock>
-                </RightInfo>
-                <NumberBlock>{player.player_number}’</NumberBlock>
+                <NameBlock>
+                  {player.player_fio.split(" ").map((word, idx) => (
+                    <span key={idx}>
+                      {word}
+                      <br />
+                    </span>
+                  ))}
+                </NameBlock>
+                <NumberBlock>{player.player_number}</NumberBlock>
               </PlayerBlock>
             ))}
           </GridWrapper>
         </Row>
+
+        <Trener>
+          <TernBlock>
+            <TrRole>главный тренер</TrRole>
+            <CoachPlayerBlockWrapper>
+              <CoachLeftImage src="/pers.png" />
+              <CoachPlayerBlock>
+                <CoachNameBlock>
+                  {match?.team_1?.coaches[0].fio
+                    .split(" ")
+                    .map((word, idx, arr) => (
+                      <div key={idx}>
+                        {word}
+                        {idx !== arr.length - 1 && <br />}
+                      </div>
+                    ))}
+                </CoachNameBlock>
+              </CoachPlayerBlock>
+            </CoachPlayerBlockWrapper>
+          </TernBlock>
+          <TernBlock>
+            <TrRole>представитель</TrRole>
+            <CoachPlayerBlockWrapper>
+              <CoachLeftImage src="/pers.png" />
+              <CoachPlayerBlock>
+                <CoachNameBlock>
+                  {match?.team_1?.representativs[0].fio
+                    .split(" ")
+                    .map((word, idx, arr) => (
+                      <div key={idx}>
+                        {word}
+                        {idx !== arr.length - 1 && <br />}
+                      </div>
+                    ))}
+                </CoachNameBlock>
+              </CoachPlayerBlock>
+            </CoachPlayerBlockWrapper>
+          </TernBlock>
+        </Trener>
       </Wrapper>
     </Container>
   );
 };
-
-const animatedGradient = keyframes`
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.93;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-`;
 
 const slideDown = keyframes`
   from {
@@ -74,7 +87,7 @@ const slideDown = keyframes`
 `;
 
 const Container = styled.div`
-  text-color: #fff;
+  color: #fff; /* вместо text-color */
   width: 1720px;
   height: 820px;
   position: absolute;
@@ -86,6 +99,17 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const animatedGradient = keyframes`
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.93;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
 `;
 
 const BackgroundImage = styled.div`
@@ -101,35 +125,12 @@ const BackgroundImage = styled.div`
 `;
 
 const Header = styled.div`
+  margin: 70px 0 80px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`;
-
-const TitleContainer = styled.div`
-  position: relative;
-  width: 646px;
-  padding: 38px 35px;
-  border-radius: 0 0 24px 24px;
-  background: linear-gradient(90deg, #1e3c94, #0098dc);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 6;
-  position: relative;
-`;
-
-const TitleLine = styled.div`
-  font-weight: 600;
-  font-size: 56px;
-  line-height: 70px;
-  letter-spacing: -2%;
-  text-align: center;
-  color: #fff;
-  text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  z-index: 999;
 `;
 
 const TourText = styled.div`
@@ -138,104 +139,80 @@ const TourText = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 37px;
-  font-weight: 700;
+  font-size: 56px;
+  font-weight: 400;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 3px;
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
 `;
 
-const Trener = styled.div`
-  margin: 0 120px;
-  display: flex;
-  gap: 54px; /* исправлено */
-  margin-top: 30px;
-  margin-bottom: 32px;
-  justify-content: space-between; /* Центрирование */
-  z-index: 9999;
-  position: relative;
-`;
-
-const TrTitle = styled.div`
-  font-weight: 400;
-  font-size: 20px;
-  color: #fff;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-`;
-
-const TeamsContainer = styled.div`
-  width: 388px;
-  height: 98px;
-  display: flex;
-  padding-top: 45px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: -50px; /* Заходим под TitleContainer */
-  z-index: 5;
-  background: url("/sostimgsubtitle.png") no-repeat center center / cover;
-  clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
-  position: relative;
-`;
-
 const Wrapper = styled.div`
   position: relative;
   background: linear-gradient(-45deg, #0e173f, #001b94, #0e173f);
   background-size: 400% 400%;
-  animation: ${slideDown} 1s ease forwards;
   width: 1642px;
-  height: 650px;
+  height: 933px;
   overflow: hidden;
-
-  padding: 0 20px; /* Добавим отступы слева и справа */
-  box-sizing: border-box;
-`;
-
-const TeamLogo = styled.img`
-  position: absolute;
-  right: -60px;
-  top: 0;
-  width: 155px;
-  height: 146px;
-  object-fit: contain;
+  animation: ${slideDown} 0.5s ease forwards;
 `;
 
 const GridWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 259pxpx);
-  gap: 10px 10px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 45px 40px;
   z-index: 133;
 `;
 
 const PlayerBlock = styled.div`
+  position: relative;
+  width: 288px;
+  height: 61px;
+  background: white;
   display: flex;
   align-items: center;
-  position: relative;
-  width: 272px;
-  height: 112px;
-  background: linear-gradient(90deg, #1e3c94 0%, #0098dc 100%);
-  border-radius: 12px;
-  padding-left: 0;
-  overflow: hidden;
+  justify-content: center;
 `;
 
 const LeftImage = styled.img`
-  width: 70px;
-  height: 80px;
-  object-fit: cover;
-  margin-left: 0;
-  margin-right: 16px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 66px;
+  height: 84px;
+  object-fit: contain;
+  z-index: 2;
+`;
+const NameBlock = styled.div`
+  font-size: 20px;
+  font-weight: 400;
+  color: #000;
+  line-height: 1.1;
+  text-align: center; /* по центру текст */
+  z-index: 3;
+  color: #001134;
+  white-space: pre-line;
+  pointer-events: none;
+  width: 100%;
+  /* Если нужно центрировать сам блок, можно сделать flex в родителе */
 `;
 
-const RightInfo = styled.div`
+const NumberBlock = styled.div`
+  position: absolute;
+  top: -2px;
+  right: -25px;
+  width: 91px;
+  height: 63px;
+  background: #794bff;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  color: white;
+  clip-path: polygon(33% 0%, 100% 0%, 73% 100%, 0% 100%);
+  z-index: 3;
 `;
 
 const Row = styled.div`
@@ -243,63 +220,89 @@ const Row = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  
+  z-index: 133;
 `;
 
-const NameBlock = styled.div`
-  font-size: 18px;
-  font-weight: 600;
-  text-transform: uppercase;
-  line-height: 1.2;
-  white-space: pre-line;
-`;
-
-const NumberBlock = styled.div`
+const Trener = styled.div`
   position: absolute;
-  bottom: 8px;
-  right: 16px;
-  color: #ffffff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
+  left: 230px;
+  top: auto; /* если нужно */
+  margin: 60px 0 32px 0;
+  display: flex;
+  gap: 54px;
+  justify-content: flex-start;
+  z-index: 9999;
+  width: auto; /* по содержимому */
 `;
 
-const Mach1 = styled.img`
+const TrRole = styled.div`
+  text-align: left;
+  padding-left: 20px;
   position: absolute;
   top: -40px;
-  left: 0;
-  width: 354px;
-  height: 354px;
-  z-index: 1;
-`;
+  left: -45px;
+  width: 258px;
+  height: 61px;
+  padding-top: 10px;
+  font-size: 16px;
+  color: #ccc;
+  font-weight: 400;
+  margin-bottom: 6px;
+  white-space: pre-line;
 
-const Mach2Blur = styled.img`
-  position: absolute;
-  bottom: 0;
-  right: -100px;
-  width: 260px;
-  height: 260px;
-  z-index: 1;
-`;
-
-const TrItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 280px; /* достаточно широкая, чтобы ФИО помещалось */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const TrName = styled.div`
-  font-weight: 900;
-  font-size: 20px;
-  color: #fff;
-  max-width: 100%;
+  text-transform: uppercase;
+  background: #1c0a4f;
   text-align: center;
+
+  clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 15% 100%);
+`;
+
+const CoachPlayerBlockWrapper = styled.div`
+  position: relative;
+  width: 288px;
+  height: 61px;
+  display: flex;
+  align-items: center;
+`;
+
+const CoachPlayerBlock = styled.div`
+  flex-grow: 1;
+  height: 61px;
+  background: linear-gradient(90deg, #ffffff, #d6e4f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 15% 100%);
+
+  overflow: visible; /* Чтобы содержимое не обрезалось */
+`;
+
+const CoachLeftImage = styled.img`
+  margin-bottom: 17px;
+  margin-left: -45px;
+  position: relative; /* Убираем absolute */
+  width: 66px;
+  height: 84px;
+  object-fit: contain;
+  margin-right: -45px; /* Чуть сдвигаем влево, чтобы выглядело прибитым */
+  z-index: 2;
+`;
+
+const TernBlock = styled.div`
+  position: relative;
+`;
+
+const CoachNameBlock = styled.div`
+  text-aign: left;
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.1;
+  text-align: center;
+  z-index: 3;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  pointer-events: none;
+  padding-left: 0;
+  width: 100%;
 `;

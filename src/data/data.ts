@@ -95,7 +95,7 @@ export const match: MatchData = {
   "circle": "1 тур",
   "stadium": {
     "id": "68190047af8426867ff2dd2d",
-    "name": "СК ТУЛГУ",
+    "name": "Солидарность Самара Арена",
     "img": "https://admin.sporlive.ru/static/images/ed31bd83b68549fd8fce5b0fcea3dfd3.jpg",
     "description": ""
   },

@@ -110,6 +110,7 @@ const slideOutToRight = keyframes`
 
 
 const Back = styled.div`
+  font-family: "Furore", sans-serif;
   position: fixed;
   top: 0;
   left: 0;

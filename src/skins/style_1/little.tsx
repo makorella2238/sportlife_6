@@ -12,37 +12,38 @@ export const Little = ({ show }: { show: boolean }) => {
   return (
     <PageWrapper>
       <Wrapper style={{ display: show ? "flex" : "none" }}>
+        <OverlayBox>
+          <TimerText>1T 26:03</TimerText>
+
+          {scoreboard.is_fouls && (
+            <FoulsRowNew>
+              <FoulNumber>{scoreboard?.team_1_fouls ?? 0}</FoulNumber>
+              <FoulText>ФОЛЫ</FoulText>
+              <FoulNumber>{scoreboard?.team_2_fouls ?? 0}</FoulNumber>
+            </FoulsRowNew>
+          )}
+        </OverlayBox>
+
         <Row>
           <TeamBox side="left">
+              <TeamLogo side="left" src={match?.team_1?.img} />
             <InnerBox side="left">
-              <TeamLogo side="left" src="/logo1.png" />
-              <TeamName>{"МЕХ"}</TeamName>
+              <TeamName side="left">{"МЕХ"}</TeamName>
               <Prym side="left"></Prym>
             </InnerBox>
           </TeamBox>
-
           <ScoreBox>
-            {scoreboard.is_fouls && (
-              <FoulsRowNew>
-                <FoulNumber>{scoreboard?.team_1_fouls ?? 0}</FoulNumber>
-                <FoulText>ФОЛЫ</FoulText>
-                <FoulNumber>{scoreboard?.team_2_fouls ?? 0}</FoulNumber>
-              </FoulsRowNew>
-            )}
-
             <MainScore>
               <ScoreValue>{scoreboard?.team_1_score}</ScoreValue>
-              <ScoreValue>–</ScoreValue>
+              <ScoreValue> </ScoreValue>
               <ScoreValue>{scoreboard?.team_2_score}</ScoreValue>
             </MainScore>
-
-            <TimerText>1T {"26:03"}</TimerText>
           </ScoreBox>
 
           <TeamBox side="right">
+              <TeamLogo side="right" src={match?.team_2?.img} />
             <InnerBox side="right">
-              <TeamLogo side="right" src="/logo2.png" />
-              <TeamName>{"ФЕЛ"}</TeamName>
+              <TeamName side="right">{"ФЕЛ"}</TeamName>
               <Prym side="right"></Prym>
             </InnerBox>
           </TeamBox>
@@ -74,11 +75,26 @@ const PageWrapper = styled.div`
   box-sizing: border-box;
 `;
 
+const OverlayBox = styled.div`
+  font-weight: 400;
+  position: absolute;
+  top: -27px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px; // Расстояние между фолами и таймером
+  height: 24px;
+  z-index: 15;
+  pointer-events: none;
+`;
+
 const Wrapper = styled.div`
   position: absolute;
   top: 70px;
   left: 62px;
-  width: 472px; /* фиксированная ширина */
+  width: 536px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,23 +103,67 @@ const Wrapper = styled.div`
   z-index: 100;
   overflow: visible;
   animation: ${slideDown} 0.5s ease forwards;
+  position: relative; // Чтобы абсолютные дети позиционировались относительно Wrapper
 `;
 
 const TeamBox = styled.div<{ side: "left" | "right" }>`
   border-radius: ${({ side }) =>
-    side === "right" ? " 0 10px 10px 0" : "10px 0 0 10px"};
+    side === "right" ? "0 10px 10px 0" : "10px 0 0 10px"};
   background: #fff;
-  display: flex;
-  align-items: center;
-  padding: ${({ side }) => (side === "right" ? "0 10px 0 0" : "0 0 0 10px")};
-  justify-content: ${({ side }) =>
-    side === "left" ? "flex-start" : "flex-end"};
   height: 56px;
-  width: 100%;
+  width: 238px; // фиксированная ширина
   position: relative;
   padding: 0 12px;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center; // Центрируем содержимое по горизонтали
+  align-items: center;
   gap: 20px;
+`;
+
+const TeamLogo = styled.img<{ side: "left" | "right" }>`
+  position: absolute;
+  top: 51%;
+  transform: translateY(-51%);
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  ${({ side }) => (side === "left" ? "left: -31px;" : "right: -31px;")}
+  z-index: 1;
+`;
+
+
+const TeamName = styled.div<{ side: "left" | "right" }>`
+  font-family: "Furore", sans-serif;
+  font-weight: 400;
+  font-size: 39px;
+  line-height: 48px;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #001134;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  text-align: center; // Центрируем текст по горизонтали
+  width: 100%; // Чтобы текст занимал всю доступную ширину внутри TeamBox
+  z-index: 1;
+`;
+
+const MainScore = styled.div`
+  position: absolute;
+  top: -28.9px; // Подкорректируй под нужное смещение сверху
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: url('/litil.png') no-repeat center center / cover;
+  height: 54.5px;
+  width: 140px;
+  z-index: 200;
+  margin: 0; /* Убираем отступы, т.к. позиционирование абсолютное */
 `;
 
 const InnerBox = styled.div<{ side: "left" | "right" }>`
@@ -127,13 +187,9 @@ const ScoreBox = styled.div`
 `;
 
 const FoulsRowNew = styled.div`
-  position: absolute;
-    top: -4px;
-  left: 0;
   width: 120px;
-  height: 24px;            /* высота 24px */
-  background: #0C1A27;
-  border-radius: 12px 12px 0  0 ; /* скругление верхний левый */
+  height: 24px;
+  background: #0c1a27;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -142,19 +198,21 @@ const FoulsRowNew = styled.div`
   box-sizing: border-box;
 `;
 
+const TimerText = styled.div`
+  width: 120px;
+  height: 24px;
+  background: #0c1a27;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const FoulNumber = styled.div`
   color: #fff;
-  font-weight: 600;
-`;
-const MainScore = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  background: linear-gradient(to right, #1e3c94 0%, #0098dc 100%);
-  height: 56px;
-  width: 100%;
-  margin: 22px 0 26px 0; /* сдвиг на 2px вверх */
+  font-weight: 400;
 `;
 
 
@@ -166,61 +224,24 @@ const ScoreValue = styled.div`
   color: white;
 `;
 
-const TimerText = styled.div`
-  background: #0C1A27;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 24px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-  text-align: center;
-  border-radius: 0 0 12px 12px;
-
-  display: flex;
-  align-items: center;   /* вертикальное выравнивание */
-  justify-content: center; /* по горизонтали (если нужно) */
-`;
-
 const Row = styled.div`
   height: 56px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  background: #fff;
   align-items: center;
   justify-content: center;
   width: 100%;
   position: relative;
   z-index: 10;
   overflow: visible;
-`;
-const TeamLogo = styled.img<{ side: "left" | "right" }>`
-  width: 47px;
-  height: 47px;
-  object-fit: contain;
-`;
-
-const TeamName = styled.div`
-  font-family: "Furore", sans-serif;
-  font-weight: 600;
-  font-size: 39px;
-  line-height: 48px;
-  letter-spacing: 0%;
-  text-transform: uppercase;
-  color: #001134 ;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  z-index: 1;
+  border-radius: 12px
 `;
 
 const FoulText = styled.div`
   font-size: 16px; // было 20px
   padding: 0 8px;
   height: auto;
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
   color: #fff;
 `;
@@ -231,7 +252,7 @@ const Prym = styled.div<{ side: "left" | "right" }>`
   ${({ side }) => (side === "left" ? "left: -12px;" : "right: -12px;")};
   width: 8px;
   height: 56px;
-  background: ${({ side }) => (side === "right" ? "#03A8FC" : "#D43927")};
+  background: ${({ side }) => (side === "right" ? "#F12A20" : "#611FF2")};
 
   /* Скошенные углы: для левого — скос справа, для правого — скос слева */
   border-radius: ${({ side }) =>
