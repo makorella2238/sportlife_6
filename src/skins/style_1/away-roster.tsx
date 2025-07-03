@@ -51,6 +51,17 @@ export const AwayRoster = ({ show }: { show: boolean }) => {
   );
 };
 
+const animatedGradient = keyframes`
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.93;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+`;
+
 const slideDown = keyframes`
   from {
     transform: translateY(-100%);
@@ -76,17 +87,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 `;
-const gradientPulse = keyframes`
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-`;
 
 const BackgroundImage = styled.div`
   position: absolute;
@@ -95,7 +95,9 @@ const BackgroundImage = styled.div`
   width: 100%;
   height: 100%;
   background: url("/bgsost.png") no-repeat center center / cover;
-  z-index: 0; /* Убедись, что ниже, чем всё остальное */
+  background-size: 200% 200%;
+  animation: ${animatedGradient} 5s linear infinite;
+  z-index: 4; /* Убедись, что ниже, чем всё остальное */
 `;
 
 const Header = styled.div`
@@ -182,10 +184,13 @@ const Wrapper = styled.div`
   position: relative;
   background: linear-gradient(-45deg, #0e173f, #001b94, #0e173f);
   background-size: 400% 400%;
-  animation: ${slideDown} 1s ease forwards, ${gradientPulse} 10s ease infinite;
+  animation: ${slideDown} 1s ease forwards;
   width: 1642px;
   height: 650px;
   overflow: hidden;
+
+  padding: 0 20px; /* Добавим отступы слева и справа */
+  box-sizing: border-box;
 `;
 
 const TeamLogo = styled.img`
@@ -203,6 +208,7 @@ const GridWrapper = styled.div`
   grid-template-rows: repeat(5, 259pxpx);
   gap: 10px 10px;
   margin-bottom: 20px;
+  z-index: 133;
 `;
 
 const PlayerBlock = styled.div`
@@ -237,6 +243,7 @@ const Row = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  
 `;
 
 const NameBlock = styled.div`

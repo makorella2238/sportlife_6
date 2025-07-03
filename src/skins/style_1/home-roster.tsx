@@ -76,17 +76,18 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 `;
-const gradientPulse = keyframes`
-  0% {
-    background-position: 0% 50%;
+
+const animatedGradient = keyframes`
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.93;
   }
   50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+    transform: scale(1.05);
+    opacity: 1;
   }
 `;
+
 
 const BackgroundImage = styled.div`
   position: absolute;
@@ -95,7 +96,9 @@ const BackgroundImage = styled.div`
   width: 100%;
   height: 100%;
   background: url("/bgsost.png") no-repeat center center / cover;
-  z-index: 0; /* Убедись, что ниже, чем всё остальное */
+  background-size: 200% 200%;
+  animation: ${animatedGradient} 5s linear infinite;
+  z-index: 4; /* Убедись, что ниже, чем всё остальное */
 `;
 
 const Header = styled.div`
@@ -145,13 +148,13 @@ const TourText = styled.div`
 `;
 
 const Trener = styled.div`
-margin: 0 120px;
+  margin: 0 120px;
   display: flex;
   gap: 54px; /* исправлено */
   margin-top: 30px;
   margin-bottom: 32px;
   justify-content: space-between; /* Центрирование */
- z-index: 9999;
+  z-index: 9999;
   position: relative;
 `;
 
@@ -178,15 +181,14 @@ const TeamsContainer = styled.div`
   position: relative;
 `;
 
-
 const Wrapper = styled.div`
   position: relative;
   background: linear-gradient(-45deg, #0e173f, #001b94, #0e173f);
   background-size: 400% 400%;
-  animation: ${slideDown} 1s ease forwards, ${gradientPulse} 10s ease infinite;
   width: 1642px;
   height: 933px;
   overflow: hidden;
+  animation: ${slideDown} 0.5s ease forwards;
 `;
 
 const TeamLogo = styled.img`
@@ -203,7 +205,8 @@ const GridWrapper = styled.div`
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(5, 259pxpx);
   gap: 10px 10px;
-`;
+    z-index: 133;
+  `;
 
 const PlayerBlock = styled.div`
   display: flex;
@@ -237,6 +240,7 @@ const Row = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  z-index: 133;
 `;
 
 const NameBlock = styled.div`

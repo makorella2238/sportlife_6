@@ -36,7 +36,7 @@ export const Little = ({ show }: { show: boolean }) => {
               <ScoreValue>{scoreboard?.team_2_score}</ScoreValue>
             </MainScore>
 
-            <TimerText>{"26:03"}</TimerText>
+            <TimerText>1T {"26:03"}</TimerText>
           </ScoreBox>
 
           <TeamBox side="right">
@@ -168,17 +168,20 @@ const ScoreValue = styled.div`
 
 const TimerText = styled.div`
   background: #0C1A27;
-  width: 120px;
-  height: 24px;
-  position: absolute; /* добавлено */
-  bottom: 0px; /* отступ снизу */
+  position: absolute;
+  bottom: 0;
   left: 0;
   width: 100%;
+  height: 24px;
   font-size: 18px;
   font-weight: 600;
   color: #fff;
   text-align: center;
-  border-radius:  0  0 12px 12px ; /* скругление верхний левый */
+  border-radius: 0 0 12px 12px;
+
+  display: flex;
+  align-items: center;   /* вертикальное выравнивание */
+  justify-content: center; /* по горизонтали (если нужно) */
 `;
 
 const Row = styled.div`

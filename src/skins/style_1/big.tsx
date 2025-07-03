@@ -74,7 +74,7 @@ const Wrapper = styled.div`
 `;
 
 const Row = styled.div`
-  width: 1320px;
+  width: 1420px;
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -88,12 +88,11 @@ const Row = styled.div`
 `;
 
 const TeamBox = styled.div<{ side: "left" | "right"; color?: string }>`
+  width: 560px;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;  /* по центру по вертикали */
-  padding: ${(props) => (props.side === "left" ? "0 0 0 60px" : "0 60px 0 0")};
-  margin: ${(props) => (props.side === "left" ? "0 0 0 5px" : "0 5px 0 0")};
   height: 90px;
 
   clip-path: ${(props) =>
@@ -115,7 +114,7 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   width: 180px;
   height: 180px;
   object-fit: contain;
-  left: ${(props) => (props.side === "left" ? "-70px" : "auto")};
+  left: ${(props) => (props.side === "left" ? "-100px" : "auto")};
   right: ${(props) => (props.side === "right" ? "-20px" : "auto")};
   top: ${(props) => (props.side === "right" ? "110px" : "60px")};
   transform: translateY(-50%);
@@ -123,9 +122,10 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
 `;
 
 const TeamName = styled.div<{ side: "left" | "right" }>`
+  width: calc(100% - 90px);
   font-family: "Furore", sans-serif;
   font-weight: 400;
-  font-size: 48px;
+  font-size: 46px;
   line-height: 48px;
   letter-spacing: 0%;
   text-transform: uppercase;
@@ -134,6 +134,8 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
   white-space: nowrap;
   overflow: hidden;
   max-width: 100%;
+
+  text-align: ${(props) => (props.side === "left" ? "right" : "left")};
 
   padding-left: ${(props) => (props.side === "left" ? "40px" : "40px")};
   margin-right: ${(props) => (props.side === "right" ? "60px" : "30px")};
@@ -199,7 +201,7 @@ const ScoreText = styled.div`
 const ScenarioContainerStart = styled.div`
   position: absolute;
   top: -17px;
-  left: 56.5%;
+  left: 50%;
   transform: translateX(-50%);
   width: 282px;
   height: 60px;

@@ -299,6 +299,7 @@ const InnerBox = styled.div<{ side: "left" | "right" }>`
 `;
 
 const TrapezoidText = styled.div`
+  padding-top: 17px;
   font-weight: 700;
   font-size: 20px;
   text-transform: uppercase;
