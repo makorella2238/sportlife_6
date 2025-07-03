@@ -25,9 +25,9 @@ export const Person = ({ kind, show }: { kind: string; show: boolean }) => {
   );
 };
 
-const slideInFromLeft = keyframes`
+const slideInFromRight = keyframes`
   from {
-    transform: translateX(-100%);
+    transform: translateX(100%);
     opacity: 0;
   }
   to {
@@ -56,7 +56,7 @@ const TeamBoxWrapper = styled.div`
   width: 475px;
   display: flex;
   align-items: flex-start;
-  animation: ${slideInFromLeft} 0.6s ease-out forwards;
+  animation: ${slideInFromRight} 0.6s ease-out forwards;
   z-index: 10;
   background: transparent; // на всякий случай
 `;

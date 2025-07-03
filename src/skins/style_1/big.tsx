@@ -62,7 +62,7 @@ export const SlideUpDiv = styled.div`
 const Wrapper = styled.div`
   position: absolute;
   bottom: 60px;
-  left: 10%;
+  left: 13%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,7 +114,7 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   width: 180px;
   height: 180px;
   object-fit: contain;
-  left: ${(props) => (props.side === "left" ? "-100px" : "auto")};
+  left: ${(props) => (props.side === "left" ? "-80px" : "auto")};
   right: ${(props) => (props.side === "right" ? "-20px" : "auto")};
   top: ${(props) => (props.side === "right" ? "110px" : "60px")};
   transform: translateY(-50%);
@@ -122,7 +122,7 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
 `;
 
 const TeamName = styled.div<{ side: "left" | "right" }>`
-  width: calc(100% - 90px);
+  width: calc(100% - 70px);
   font-family: "Furore", sans-serif;
   font-weight: 400;
   font-size: 46px;
