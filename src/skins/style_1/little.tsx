@@ -5,7 +5,8 @@ import { useMatch, useScoreboard, useScenario } from "@/hooks";
 
 const getShortName = (name?: string) => (name ? name.slice(0, 4) : "");
 
-export const Little = ({ show }: { show: boolean }) => {
+export const 
+Little = ({ show }: { show: boolean }) => {
   const match = useMatch();
   const { scoreboard } = useScoreboard();
 
@@ -34,12 +35,14 @@ export const Little = ({ show }: { show: boolean }) => {
               <Prym side="left" />
             </InnerBox>
           </TeamBox>
+          
           <ScoreBox>
             <MainScore>
-              <ScoreValue>{scoreboard?.team_1_score}</ScoreValue>
+              <ScoreValue side="left">{scoreboard?.team_1_score}</ScoreValue>
               <div style={{ width: "8px" }} />{" "}
+                          <Moln />
               {/* Просто отступ вместо пробела */}
-              <ScoreValue>{scoreboard?.team_2_score}</ScoreValue>
+              <ScoreValue side="right">{scoreboard?.team_2_score}</ScoreValue>
             </MainScore>
           </ScoreBox>
 
@@ -64,6 +67,34 @@ const slideDown = keyframes`
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+`;
+
+const lightningStrike = keyframes`
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 0 transparent);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  10% {
+    filter: brightness(3) drop-shadow(0 0 10px #fff);
+    opacity: 1;
+    transform: translateX(2px);
+  }
+  20% {
+    filter: brightness(1.5) drop-shadow(0 0 5px #f0f8ff);
+    opacity: 0.8;
+    transform: translateX(-2px);
+  }
+  30% {
+    filter: brightness(2.5) drop-shadow(0 0 12px #aaf);
+    opacity: 1;
+    transform: translateX(1px);
+  }
+  50% {
+    filter: brightness(1) drop-shadow(0 0 0 transparent);
+    opacity: 0.7;
+    transform: translateX(0);
   }
 `;
 
@@ -131,7 +162,7 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   width: 90px;
   height: 90px;
   object-fit: contain;
-  ${({ side }) => (side === "left" ? "left: -31px;" : "right: -31px;")}
+  ${({ side }) => (side === "left" ? "left: -61px;" : "right: -61px;")}
   z-index: 1;
 `;
 
@@ -153,18 +184,13 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
 `;
 
 const MainScore = styled.div`
-  position: absolute;
-  top: -28.9px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: grid;
-  grid-template-columns: 1fr auto 1fr; // три колонки
+  position: relative;
+  display: flex;
   align-items: center;
-  justify-items: center;
-  background: url("/litil.png") no-repeat center center / cover;
-  height: 54.5px;
-  width: 140px;
-  z-index: 200;
+  justify-content: center;
+  font-size: 74px;
+  font-weight: 700;
+  line-height: 1;
 `;
 
 const InnerBox = styled.div<{ side: "left" | "right" }>`
@@ -175,21 +201,28 @@ const InnerBox = styled.div<{ side: "left" | "right" }>`
   width: 100%;
   box-sizing: border-box;
   position: relative;
-  padding-right: ${({ side }) => (side === "right" ? "35px" : "0")};
+  padding-left: ${({ side }) => (side === "right" ? "45px" : "0")};
 
-  padding-left: ${({ side }) => (side === "left" ? "28px" : "0")};
+  padding-right: ${({ side }) => (side === "left" ? "50px" : "0")};
 `;
 
 const ScoreBox = styled.div`
-  position: relative;
-  margin-top: 4px;
-  width: 120px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background: url("bigimg.png") no-repeat center center / cover;
+  width: 140px; /* можно подкорректировать */
+  height: 54.5px;
+
+  color: #fff;
+
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 15; /* поверх TeamBox */
 `;
-
 const FoulsRowNew = styled.div`
   width: 120px;
   height: 24px;
@@ -218,7 +251,9 @@ const FoulNumber = styled.div`
   font-weight: 400;
 `;
 
-const ScoreValue = styled.div`
+const ScoreValue = styled.div<{ side: "left" | "right" }>`
+  padding-right: ${({ side }) => (side === "right" ? "30px" : "0")};
+  padding-left: ${({ side }) => (side === "left" ? "30px" : "0")};
   font-size: 37px;
   min-width: 32px; // достаточно для двух знаков
   text-align: center;
@@ -267,4 +302,14 @@ const Prym = styled.div<{ side: "left" | "right" }>`
   /* Скошенные углы: для левого — скос справа, для правого — скос слева */
   border-radius: ${({ side }) =>
     side === "right" ? "0 10px 10px 0" : "10px 0 0 10px"};
+`;
+
+const Moln = styled.div`
+  margin-right: 8px;
+  width: 24px;
+  height: 59px;
+  background: url("/molia.png") no-repeat center center;
+  background-size: contain;
+  animation: ${lightningStrike} 2.5s ease-in-out infinite;
+  z-index: 9999;
 `;

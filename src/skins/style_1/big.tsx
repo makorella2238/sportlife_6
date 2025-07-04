@@ -90,7 +90,7 @@ const lightningStrike = keyframes`
 const Wrapper = styled.div`
   position: absolute;
   bottom: 60px;
-  left: 13%;
+  left: 13.5%;
   display: flex;
   flex-direction: column;
   align-items: center;
