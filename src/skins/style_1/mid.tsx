@@ -32,6 +32,7 @@ export const Mid = ({ show }: { show: boolean }) => {
     <Container>
       <Wrapper style={{ display: show ? "flex" : "none" }}>
         <BackgroundImage />
+        <GradientOverlay />
         <TitleContainer>
           <TitleLine ref={titleRef}>{titleWords}</TitleLine>
         </TitleContainer>
@@ -49,9 +50,13 @@ export const Mid = ({ show }: { show: boolean }) => {
           </TeameBox>
 
           <CenterBox>
-            <TeamNameForData side="top">{/* дата отсюда */}31.07.2025</TeamNameForData>
+            <TeamNameForData side="top">
+              {/* дата отсюда */}31.07.2025
+            </TeamNameForData>
             <CenterImage src="/VS.png" alt="center image" />
-            <TeamNameForData side="bottom">{/* время отсюда */}03:00</TeamNameForData>
+            <TeamNameForData side="bottom">
+              {/* время отсюда */}03:00
+            </TeamNameForData>
           </CenterBox>
 
           <TeameBox color={match?.team_2?.color}>
@@ -103,6 +108,19 @@ const lightningStrike = keyframes`
   }
 `;
 
+const GradientOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #0e173f, #001b94, #0e173f);
+  opacity: 0.8; // можно подрегулировать, если нужно полупрозрачный градиент
+  z-index: 5;
+  pointer-events: none;
+`;
+
+
 const Container = styled.div`
   position: absolute;
   top: 0;
@@ -122,7 +140,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  // background: url("/Group.png") no-repeat center center / cover;
+  background: linear-gradient(-45deg, #0e173f, #001b94, #0e173f);
 
   animation: ${slideDown} 0.5s ease forwards;
 
@@ -264,10 +282,9 @@ const TeamName = styled.div`
   max-width: 100%;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 
-  white-space: nowrap;        // ⬅️ Не даёт переносить строки
-  overflow: hidden;           // ⬅️ Обрезает текст, если он не вмещается
+  white-space: nowrap; // ⬅️ Не даёт переносить строки
+  overflow: hidden; // ⬅️ Обрезает текст, если он не вмещается
 `;
-
 
 const TeamNameForData = styled.div<{ side: "top" | "bottom" }>`
   width: 224px;
@@ -288,64 +305,4 @@ const TeamLogo = styled.img`
   height: 250px;
   object-fit: contain;
   margin-bottom: 20px;
-`;
-
-const Row = styled.div`
-  width: 452px;
-  margin-top: 47px;
-  height: 56px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 10;
-  border-radius: 10px;
-`;
-
-const Trapezoid = styled.div`
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 180px;
-  height: 60px;
-  background: url("/Trapezoid.png") no-repeat center center / cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: -1;
-`;
-
-const TimeBox = styled.div<{ side: "left" | "right" }>`
-  width: 223px;
-  background: linear-gradient(to top, #010920, #0e173f);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 56px;
-  position: relative;
-  border-radius: ${({ side }) =>
-    side === "right" ? "0 16px 16px 0" : "16px 0 0 16px"};
-`;
-
-const InnerBox = styled.div<{ side: "left" | "right" }>`
-  display: flex;
-  flex-direction: ${({ side }) => (side === "right" ? "row-reverse" : "row")};
-  align-items: center;
-  justify-content: center;
-  padding: ${({ side }) => (side === "right" ? "0 20px" : "0 20px")};
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
-  border-radius: 10px;
-  z-index: 5;
-`;
-
-const TrapezoidText = styled.div`
-  padding-top: 17px;
-  font-weight: 700;
-  font-size: 20px;
-  text-transform: uppercase;
-  color: #0e173f;
 `;

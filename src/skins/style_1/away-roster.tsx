@@ -10,12 +10,14 @@ export const AwayRoster = ({ show }: { show: boolean }) => {
   return (
     <Container style={{ display: show ? "flex" : "none" }}>
       <Wrapper>
+        <BackgroundImage />
+        <GradientOverlay />
         <Header>
           <TourText>СОСТАВ {teamName}</TourText>
         </Header>
         <Row>
           <GridWrapper>
-             {players.map((player, i) => (
+            {players.map((player, i) => (
               <PlayerBlock key={i} delay={i * 0.1}>
                 <LeftImage src="/pers.png" />
                 <NameBlock>
@@ -97,7 +99,6 @@ const fadeInUp = keyframes`
   }
 `;
 
-
 const Container = styled.div`
   color: #fff; /* вместо text-color */
   width: 1720px;
@@ -114,29 +115,19 @@ const Container = styled.div`
 `;
 
 const animatedGradient = keyframes`
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.93;
+  0% {
+    background-position: 0% 50%;
   }
   50% {
-    transform: scale(1.05);
-    opacity: 1;
+    background-position: 100% 50%;
   }
-`;
-
-const BackgroundImage = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url("/bgsost.png") no-repeat center center / cover;
-  background-size: 200% 200%;
-  animation: ${animatedGradient} 5s linear infinite;
-  z-index: 4; /* Убедись, что ниже, чем всё остальное */
+  100% {
+    background-position: 0% 50%;
+  }
 `;
 
 const Header = styled.div`
+  position: relative;
   margin: 70px 0 80px 0;
   display: flex;
   flex-direction: column;
@@ -166,7 +157,32 @@ const Wrapper = styled.div`
   width: 1642px;
   height: 673px;
   overflow: hidden;
+  border-radius: 64px;
   animation: ${slideDown} 0.5s ease forwards;
+`;
+
+const GradientOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #0e173f, #001b94, #0e173f);
+  opacity: 0.8; // можно подрегулировать, если нужно полупрозрачный градиент
+  z-index: 5;
+  pointer-events: none;
+`;
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("/Group.png") no-repeat center center / cover;
+  background-size: 200% 200%;
+  animation: ${animatedGradient} 20s linear infinite;
+  z-index: 4;
 `;
 
 const GridWrapper = styled.div`
@@ -201,6 +217,7 @@ const NameBlock = styled.div`
   font-size: 20px;
   font-weight: 400;
   color: #000;
+  padding-top: 8px;
   line-height: 1.1;
   text-align: center; /* по центру текст */
   z-index: 3;
@@ -246,7 +263,6 @@ const Trener = styled.div`
   justify-content: flex-start;
   z-index: 9999;
   width: auto; /* по содержимому */
-
 `;
 
 const TrRole = styled.div`

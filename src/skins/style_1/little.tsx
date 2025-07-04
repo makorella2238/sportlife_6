@@ -147,6 +147,7 @@ const TeamName = styled.div<{ side: "left" | "right" }>`
   overflow: hidden;
   text-overflow: ellipsis;
 
+  padding-bottom: 5px;
   text-align: center;
   z-index: 1;
 `;
@@ -210,7 +211,6 @@ const TimerText = styled.div`
   color: #fff;
   display: flex;
   justify-content: center;
-  align-items: center;
 `;
 
 const FoulNumber = styled.div`
