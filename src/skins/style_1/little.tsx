@@ -128,8 +128,8 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
   position: absolute;
   top: 51%;
   transform: translateY(-51%);
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   object-fit: contain;
   ${({ side }) => (side === "left" ? "left: -31px;" : "right: -31px;")}
   z-index: 1;
